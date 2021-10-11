@@ -1,0 +1,51 @@
+# Version of docker-compose
+version: '3'
+
+services:
+  reverse_proxy:
+    image: nginx
+    container_name: reverse_proxy
+    hostname: reverse_proxy
+    volumes:
+      - '$PWD/reverse_proxy/nginx:/etc/nginx'
+    environment:
+      WEB_URL: ${WEB_URL}
+      WEB_PORT: ${WEB_PORT}
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - web
+
+  web:
+    build:
+      context: ./web
+      dockerfile: docker/Dockerfile
+    volumes:
+      - '$PWD/web/code:/app'
+    environment:
+      SITE_URL: ${SITE_URL}
+      WEB_PORT: ${WEB_PORT}
+      PGHOST: ${POSTGRES_HOST}
+      PGPORT: ${POSTGRES_PORT}
+      PGDATABASE: ${POSTGRES_DATABASE}
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${WEB_PORT}:${WEB_PORT}"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+# Define the volumes
+volumes:
+  pgdata:

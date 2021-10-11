@@ -1,0 +1,23 @@
+# Config
+/config/.env*
+.env
+.DS_Store
+
+# Elixir
+/web/code/_build
+/web/code/deps
+/web/code/doc
+/web/code/tmp
+/web/code/node_modules
+
+/web/code/assets/node_modules
+
+/web/code/installer/_build
+/web/code/installer/tmp
+/web/code/installer/doc
+/web/code/installer/deps
+
+/web/code/integration_test/_build
+/web/code/integration_test/deps
+
+/web/code/erl_crash.dump
