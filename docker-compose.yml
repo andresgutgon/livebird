@@ -7,13 +7,12 @@ services:
     container_name: reverse_proxy
     hostname: reverse_proxy
     volumes:
-      - '$PWD/reverse_proxy/nginx:/etc/nginx'
+      - ./reverse_proxy/nginx:/etc/nginx
     environment:
       WEB_URL: ${WEB_URL}
       WEB_PORT: ${WEB_PORT}
     ports:
       - 80:80
-      - 443:443
     depends_on:
       - web
 
@@ -24,7 +23,7 @@ services:
     volumes:
       - '$PWD/web/code:/app'
     environment:
-      SITE_URL: ${SITE_URL}
+      WEB_URL: ${WEB_URL}
       WEB_PORT: ${WEB_PORT}
       PGHOST: ${POSTGRES_HOST}
       PGPORT: ${POSTGRES_PORT}
